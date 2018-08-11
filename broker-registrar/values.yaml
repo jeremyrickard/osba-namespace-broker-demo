@@ -1,0 +1,17 @@
+broker:
+  url: 
+
+basicAuth:
+  ## DO NOT USE THIS DEFAULT VALUE IN PRODUCTION
+  username: username
+  ## DO NOT USE THIS DEFAULT VALUE IN PRODUCTION
+  password: password
+
+catalog:
+  restrictions:
+    plans:
+    classes:
+
+tls:
+  enabled: true
+  skipVerify: true

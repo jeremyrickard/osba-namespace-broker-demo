@@ -1,0 +1,32 @@
+apiVersion: servicecatalog.k8s.io/v1beta1
+kind: ServiceBroker
+metadata:
+  name: osba
+  namespace: {{ .Release.Namespace }}
+spec:
+  {{- if .Values.tls.enabled }}
+  {{- if .Values.tls.skipVerify }}
+  insecureSkipTLSVerify: true 
+  {{- else}}
+  caBundle: {{ .Values.tls.ca }}
+  {{- end }}
+  {{- end }}
+  url: {{ .Values.broker.url }}
+  authInfo:
+    basic:
+      secretRef:
+        name: "{{ template "fullname" . }}-auth"
+        namespace: {{ .Release.Namespace | quote }}
+  catalogRestrictions:
+    {{- if .Values.catalog.restrictions.plans }}
+    servicePlan: 
+    {{- range .Values.catalog.restrictions.plans }}
+    - {{ . | quote }}
+    {{- end }}
+    {{- end }}
+    {{- if .Values.catalog.restrictions.classes }}
+    serviceClass: 
+    {{- range .Values.catalog.restrictions.classes }}
+    - {{ . | quote }}
+    {{- end }}
+    {{- end }}
